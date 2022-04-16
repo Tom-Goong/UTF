@@ -17,6 +17,14 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
+        <!-- 自定义 -->
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>3.13.8</version>
+        </dependency>
+
+        <!--   初始化     -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
