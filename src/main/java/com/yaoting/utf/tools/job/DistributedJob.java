@@ -2,7 +2,6 @@ package com.yaoting.utf.tools.job;
 
 
 import com.yaoting.utf.infrastructure.context.AppContext;
-import com.yaoting.utf.infrastructure.utils.DateUtils;
 import com.yaoting.utf.infrastructure.utils.Preconditions;
 import com.yaoting.utf.tools.lock.LockInfoVO;
 import com.yaoting.utf.tools.lock.LockService;
@@ -41,7 +40,7 @@ public abstract class DistributedJob {
     }
 
     private LockInfoVO getLockInfo(String lockKey, Long expiredIn) {
-        Date expiredDate = DateUtils.long2Date(System.currentTimeMillis() + expiredIn);
+        Date expiredDate = new Date(System.currentTimeMillis() + expiredIn);
         return new LockInfoVO()
                 .setService(appContext.getName())
                 .setLockKey(lockKey)

@@ -5,9 +5,6 @@ import com.yaoting.utf.domain.job.Job;
 import com.yaoting.utf.domain.job.Result;
 import com.yaoting.utf.domain.job.ServiceState;
 import com.yaoting.utf.domain.job.vo.SyncJobStateVO;
-import com.yaoting.utf.infrastructure.http.APIResult;
-import kong.unirest.HttpResponse;
-import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -37,9 +34,6 @@ public class HTTPRemoteCoordinator implements RemoteCoordinator, Listener {
     @Override
     public void syncInOtherJobState(SyncJobStateVO vo) {
 
-        HttpResponse<APIResult> apiResultHttpResponse = Unirest.post(hostname + port + "")
-                .body(vo)
-                .asObject(APIResult.class);
     }
 
     @Override
