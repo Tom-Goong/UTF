@@ -12,8 +12,6 @@ public abstract class BaseEntity {
     private Date createTime;
     private Date updateTime;
 
-
-
     protected void persist() {
 
     }

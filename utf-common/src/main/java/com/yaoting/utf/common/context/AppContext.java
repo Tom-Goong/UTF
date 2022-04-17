@@ -27,9 +27,6 @@ public class AppContext implements PermanentContext {
     @Value("${app.name}")
     private String name;
 
-    @Value("${app.home-url}")
-    private String homeUrl;
-
     @Value("${app.env}")
     private EnvEnum env;
 
