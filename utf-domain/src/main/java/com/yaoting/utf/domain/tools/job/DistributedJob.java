@@ -41,10 +41,9 @@ public abstract class DistributedJob {
 
     private LockInfoVO getLockInfo(String lockKey, Long expiredIn) {
         Date expiredDate = new Date(System.currentTimeMillis() + expiredIn);
-        return new LockInfoVO()
-                .setService(appContext.getName())
-                .setLockKey(lockKey)
-                .setInstance(appContext.getHostname())
-                .setExpireTime(expiredDate);
+        return new LockInfoVO(appContext.getName(),
+                lockKey,
+                appContext.getHostname(),
+                expiredDate);
     }
 }

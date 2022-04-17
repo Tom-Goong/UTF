@@ -108,7 +108,6 @@ public class TaskExecutor implements Executor {
                     log.info("{} of taskId: {}, jobId:{} has been run, go to handle result: {}", task.getFuncName(), task.getId(), task.getJobId(), result);
                     ThreadPool.submitBossThread(() -> handleResult(vertex, result));
                 } catch (Throwable e) {
-                    // 已经done，不应该进入这里
                     log.error("failed to get result of task, jobId:{}, taskId:{}", task.getJobId(), task.getId(), e);
                 }
             }
@@ -127,7 +126,7 @@ public class TaskExecutor implements Executor {
         }
 
         task.toState(State.Succeed);
-        log.info("task has succeed, result:{}, vertex: {}", result, vertex);
+        log.info("Task has been handled succeed, result:{}, vertex: {}", result, vertex);
         if (ValidateUtils.notNull(task.getCallBackUrl())) {
             callback(task.getCallBackUrl(), result);
         }
@@ -136,8 +135,9 @@ public class TaskExecutor implements Executor {
         jobExecutor.handleTaskResult(vertex, result);
     }
 
+    // TODO use Event
     private void callback(String callBackUrl, Result<?> result) {
-        log.info("start to callback, url:{}, result of task:{}", callBackUrl, result);
+        log.info("Start to callback, url:{}, result of task:{}", callBackUrl, result);
         try {
             String body = JSONUtils.objectToString(result);
 
@@ -172,7 +172,6 @@ public class TaskExecutor implements Executor {
         taskHandler.submit(this::handleTask);
         taskFutureHandler.scheduleAtFixedRate(this::futureInspect, 0L, 2L, TimeUnit.SECONDS);
 
-        // 变更状态
         toState(ServiceState.WORKING);
     }
 

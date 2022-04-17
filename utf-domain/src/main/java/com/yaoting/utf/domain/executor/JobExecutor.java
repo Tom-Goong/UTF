@@ -34,7 +34,6 @@ public class JobExecutor implements Executor {
     private final BlockingQueue<Job> jobQueue = new LinkedBlockingQueue<>(128);
 
     private Map<Long, Job> jobInRunning = new ConcurrentHashMap<>();
-//    private final Map<Long, DAG> dags = new ConcurrentHashMap<>();
 
     public boolean submitJob(Job job) {
         if (!isWorking()) {
@@ -65,12 +64,24 @@ public class JobExecutor implements Executor {
     @Override
     public void start() {
         switch (getState()) {
-            case READY: log.info("Ready to work, let's start JobExecutor"); break;
-            case STARTING: log.warn("This node is starting, can not start again"); return;
-            case STOPPING: log.warn("This node is stopping, can not start"); return;
-            case STOPPED: log.warn("This node is starting, can not start"); return;
-            case WORKING: log.warn("This node has started, can not start again"); return;
-            default: throw new IllegalStateException("Unsupported NodeType need to be handled");
+            case READY -> log.info("Ready to work, let's start JobExecutor");
+            case STARTING -> {
+                log.warn("This node is starting, can not start again");
+                return;
+            }
+            case STOPPING -> {
+                log.warn("This node is stopping, can not start");
+                return;
+            }
+            case STOPPED -> {
+                log.warn("This node is starting, can not start");
+                return;
+            }
+            case WORKING -> {
+                log.warn("This node has started, can not start again");
+                return;
+            }
+            default -> throw new IllegalStateException("Unsupported NodeType need to be handled");
         }
 
         toState(ServiceState.STARTING);
@@ -84,6 +95,7 @@ public class JobExecutor implements Executor {
     }
 
     private void handlerJob() {
+
         while (true) {
             if (!isWorking()) {
                 log.warn("Job-Executor has been working");
@@ -127,7 +139,6 @@ public class JobExecutor implements Executor {
                 // TODO sync to 协调器
                 log.info("EndVertex has succeed, notify Coordinate");
                 sync2Listeners(job, result);
-//                dags.remove(jobId);
                 jobInRunning.remove(jobId);
                 return;
             }
@@ -172,10 +183,8 @@ public class JobExecutor implements Executor {
         while (ValidateUtils.isNotEmpty(jobQueue)) {
             try {
                 Job job = jobQueue.take();
-                // 回退状态，让其他节点可以获取
                 job.toState(State.Ready);
             } catch (InterruptedException e) {
-                // 正常不会发生
                 log.error(e.getMessage(), e);
             }
         }
@@ -185,9 +194,9 @@ public class JobExecutor implements Executor {
 
         taskExecutor.stop();
 
-        // 入口和taskExecutor都已关闭，running中的不会变更状态，直接修改成
+        // Froze uncompleted jobs, let other working node can handle them
         jobInRunning.values().forEach(job -> {
-            log.info("Engine starts to exit, uncompleted job will be frozen, jobId: {}, jobName: {}", job.getId(), job.getName());
+            log.info("Engine starts to exit, uncompleted jobs will be frozen, jobId: {}, jobName: {}", job.getId(), job.getName());
             job.toState(State.Frozen);
         });
 

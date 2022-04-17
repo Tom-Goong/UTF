@@ -27,15 +27,13 @@ public class Result<T> {
                 .setData(null);
     }
 
-    @SuppressWarnings("rawtypes")
     public static <T> Result<T> of(Long jobId, Long taskId, T date) {
-        return new Result(jobId, taskId)
+        return new Result<T>(jobId, taskId)
                 .setData(date);
     }
 
-    @SuppressWarnings("rawtypes")
     public static <T> Result<T> failed(Long jobId, Long taskId, String errMsg) {
-        return new Result(jobId, taskId)
+        return new Result<T>(jobId, taskId)
                 .setIsSucceed(false)
                 .setErrMsg(errMsg);
     }

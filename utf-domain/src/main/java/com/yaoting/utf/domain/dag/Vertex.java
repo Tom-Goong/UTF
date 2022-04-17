@@ -23,7 +23,7 @@ import static com.yaoting.utf.domain.dag.DAG.START_VERTEX_ID;
 
 @Data
 @EqualsAndHashCode(exclude = "ins")
-@ToString(exclude = "ins")
+@ToString(exclude = {"ins", "outs"})
 @Accessors(chain = true)
 public class Vertex {
     private Long id;

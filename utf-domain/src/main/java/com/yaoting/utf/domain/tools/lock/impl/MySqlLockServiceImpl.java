@@ -27,12 +27,12 @@ public class MySqlLockServiceImpl implements LockService {
         Preconditions.checkState(notNull(lockInfoVO), "lockInfo 为空");
         Preconditions.checkState(!lockInfoVO.hasExpired(), "给定 lockInfo 锁已过期，不需要锁");
 
-        LockInfoVO lockInfoFromDB = lockInfoRepo.selectByServiceAndLockKey(lockInfoVO.getService(), lockInfoVO.getLockKey());
+        LockInfoVO lockInfoFromDB = lockInfoRepo.selectByServiceAndLockKey(lockInfoVO.namespace(), lockInfoVO.key());
 
         if (isNull(lockInfoFromDB)) {
             return Optional.ofNullable(lockInfoRepo.getLock(lockInfoVO));
         } else if (hasExpired(lockInfoFromDB)) {
-            if (lockInfoRepo.deleteById(lockInfoFromDB.getId())) {
+            if (lockInfoRepo.deleteById(lockInfoFromDB.namespace(), lockInfoFromDB.key())) {
                 // 删除过期的后，重新插入
                 return tryLock(lockInfoVO);
             }
@@ -46,17 +46,17 @@ public class MySqlLockServiceImpl implements LockService {
 
     @Override
     public boolean releaseLock(LockInfoVO lockInfoVO) {
-        LockInfoVO lockInfoFromDB = lockInfoRepo.selectByServiceAndLockKey(lockInfoVO.getService(), lockInfoVO.getLockKey());
+        LockInfoVO lockInfoFromDB = lockInfoRepo.selectByServiceAndLockKey(lockInfoVO.namespace(), lockInfoVO.key());
 
         if (isNull(lockInfoFromDB)) {
             return true;
         } else if (hasExpired(lockInfoFromDB)) {
-            lockInfoRepo.deleteById(lockInfoFromDB.getId());
+            lockInfoRepo.deleteById(lockInfoFromDB.namespace(), lockInfoFromDB.key());
             return true;
         }
 
         Preconditions.checkBizStatus(sameInstance(lockInfoFromDB, lockInfoVO), "有效锁只能由持有者释放");
-        return lockInfoRepo.deleteById(lockInfoFromDB.getId());
+        return lockInfoRepo.deleteById(lockInfoFromDB.namespace(), lockInfoFromDB.key());
     }
 
     @Override
@@ -68,15 +68,15 @@ public class MySqlLockServiceImpl implements LockService {
     public void forceRelease(String service, String lockKey) {
         LockInfoVO lockInfoVO = lockInfoRepo.selectByServiceAndLockKey(service, lockKey);
         if (notNull(lockInfoVO)) {
-            lockInfoRepo.deleteById(lockInfoVO.getId());
+            lockInfoRepo.deleteById(lockInfoVO.namespace(), lockInfoVO.key());
         }
     }
 
     private boolean hasExpired(LockInfoVO lockInfo) {
-        return System.currentTimeMillis() >= lockInfo.getExpireTime().getTime();
+        return System.currentTimeMillis() >= lockInfo.expireTime().getTime();
     }
 
     private boolean sameInstance(LockInfoVO lockInfo_1, LockInfoVO lockInfo_2) {
-        return lockInfo_1.getInstance().equals(lockInfo_2.getInstance());
+        return lockInfo_1.instance().equals(lockInfo_2.instance());
     }
 }
