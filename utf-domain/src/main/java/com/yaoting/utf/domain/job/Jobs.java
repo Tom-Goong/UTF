@@ -2,7 +2,6 @@ package com.yaoting.utf.domain.job;
 
 
 import com.yaoting.utf.common.utils.SpringTool;
-import com.yaoting.utf.domain.job.repo.JobRepo;
 
 import java.util.List;
 

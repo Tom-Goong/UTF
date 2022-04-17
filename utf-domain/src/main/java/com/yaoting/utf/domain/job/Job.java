@@ -3,9 +3,10 @@ package com.yaoting.utf.domain.job;
 import com.yaoting.utf.common.utils.Preconditions;
 import com.yaoting.utf.common.utils.SpringTool;
 import com.yaoting.utf.common.utils.ValidateUtils;
-import com.yaoting.utf.domain.common.BaseEntity;
-import com.yaoting.utf.domain.job.repo.JobRepo;
+import com.yaoting.utf.domain.common.entity.BaseEntity;
+import com.yaoting.utf.domain.dag.DAG;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yaoting.utf.domain.job.task.Task;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class Job extends BaseEntity {
     }
 
     @Override
-    protected void persist() {
+    public void persist() {
         JobRepo repo = SpringTool.getBean(JobRepo.class);
         repo.persist(this);
     }
