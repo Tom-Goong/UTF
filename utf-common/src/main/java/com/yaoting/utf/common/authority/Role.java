@@ -1,9 +1,9 @@
 package com.yaoting.utf.common.authority;
 
 public enum Role {
-    Normal(0, "普通账号"),
-    Manager(1, "管理员"),
-    Super_Manager(2, "超级管理员"),
+    Normal(0, "Normal Account"),
+    Manager(1, "Manager Account"),
+    Super_Manager(2, "Super Manager Account"),
     ;
 
     private final int id;

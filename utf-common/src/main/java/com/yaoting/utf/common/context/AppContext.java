@@ -12,11 +12,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 
-/**
- * 应用上下文，程序生命周期中只有一个对象，
- * <p>
- * 可以包含硬件、网络等服务实例生命周期中不会改变的信息
- */
 
 @Slf4j
 @Getter
@@ -38,9 +33,6 @@ public class AppContext implements PermanentContext {
 
     private final ContextStatus status = ContextStatus.running;
 
-    /**
-     * 服务实例自身IP
-     */
     private final String ip = InetAddress.getLocalHost().getHostAddress();
 
     private final String hostname = InetAddress.getLocalHost().getHostName();
@@ -53,17 +45,17 @@ public class AppContext implements PermanentContext {
 
     @Override
     public Context setStatus(ContextStatus contextStatus) {
-        throw new IllegalStateException("AppContext 不支持调整状态");
+        throw new IllegalStateException("AppContext can't change state");
     }
 
     @Override
     public void toFailed() {
-        throw new IllegalStateException("AppContext 不支持调整状态");
+        throw new IllegalStateException("AppContext can't change state");
     }
 
     @Override
     public void toCompleted() {
-        throw new IllegalStateException("AppContext 不支持调整状态");
+        throw new IllegalStateException("AppContext can't change state");
     }
 
     public static AppContext getInstance() {

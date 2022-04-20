@@ -11,8 +11,5 @@ public interface LockService {
 
     List<LockInfoVO> listAll();
 
-    /**
-     * 强制释放锁，作用管理，不对一般用户开放
-     */
     void forceRelease(String service, String lockKey);
 }

@@ -2,7 +2,7 @@ package com.yaoting.utf.domain.node;
 
 import com.yaoting.utf.common.context.AppContext;
 import com.yaoting.utf.common.trace.Trace;
-import com.yaoting.utf.domain.coordinator.LocalCoordinator;
+import com.yaoting.utf.domain.coordinator.local.LocalCoordinator;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

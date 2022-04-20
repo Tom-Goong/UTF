@@ -25,8 +25,8 @@ public abstract class DistributedJob {
     }
 
     protected Optional<LockInfoVO> tryLock(String lockKey, Long expiredIn) {
-        Preconditions.notBlank(lockKey, "LockKey 不能为空");
-        Preconditions.checkState(expiredIn > 0, "expiredIn 需要大于零");
+        Preconditions.notBlank(lockKey, "LockKey can't been blank");
+        Preconditions.checkState(expiredIn > 0, "expiredIn needs to been positive");
 
         log.info("Try to get lock: {}, expiredIn: {}", lockKey, expiredIn);
 

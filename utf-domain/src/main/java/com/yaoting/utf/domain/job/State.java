@@ -1,8 +1,5 @@
 package com.yaoting.utf.domain.job;
 
-/**
- * Pausing 与 Paused 仅适用于 job. Task 是原子操作
- */
 public enum State {
     Ready,
     Submitting,

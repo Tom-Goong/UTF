@@ -4,7 +4,7 @@ import com.yaoting.utf.common.utils.ValidateUtils;
 import com.yaoting.utf.domain.job.Job;
 import com.yaoting.utf.domain.job.Jobs;
 import com.yaoting.utf.domain.job.State;
-import com.yaoting.utf.domain.coordinator.DefaultLocalCoordinator;
+import com.yaoting.utf.domain.coordinator.local.DefaultLocalCoordinator;
 import com.yaoting.utf.domain.tools.job.DistributedJob;
 import com.yaoting.utf.domain.tools.lock.LockInfoVO;
 import jakarta.annotation.Resource;
@@ -44,7 +44,7 @@ public class CronTrigger extends DistributedJob implements Trigger {
                 log.info("Get lock successful，key: {}，start to run job, JobId: {}", lockOptional.get(), job.getId());
                 localCoordinator.addJob(job);
 
-                // addJob 之后，直接释放锁
+                // after addJob, release lock
                 releaseLock(lockOptional.get());
             }
         });

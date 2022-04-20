@@ -9,9 +9,6 @@ import lombok.experimental.Accessors;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * 简易版本，需使用 Edge
- */
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode
@@ -21,7 +18,7 @@ public class DAG {
 
     private String name;
     private Job job;
-    private boolean hasStabled = false; // 表示是否已经定型，定型后，不允许在添加节点
+    private boolean hasStabled = false; // if true, Dag can't change anymore
 
     private Vertex startVertex;
     private Vertex endVertex;
@@ -36,12 +33,12 @@ public class DAG {
 
     public DAG pushTask(Task task) {
         if (hasStabled) {
-            throw new IllegalStateException("DAG 已经固话，无法再添加节点");
+            throw new IllegalStateException("DAG has been stabled, can't add task more");
         }
 
         Optional<Vertex> vertex = find(task.getPreTask());
         if (!vertex.isPresent()) {
-            throw new IllegalArgumentException("找不到前置节点，taskId: " + task.getId());
+            throw new IllegalArgumentException("Can't find pre task，taskId: " + task.getId());
         }
 
         vertex.get().appendTask(task);

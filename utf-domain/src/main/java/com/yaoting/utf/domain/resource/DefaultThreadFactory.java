@@ -32,8 +32,6 @@ public class DefaultThreadFactory implements ThreadFactory {
     @Override
     public Thread newThread(Runnable r) {
         Thread t = new Thread(r, this.prefix + this.nextId.incrementAndGet());
-        // 设置一个守护线程，防止死循环
-        // 当其他线程都结束任务（包括main线程），只剩下daemon线程时，daemon线程直接终止
         try {
             if (t.isDaemon()) {
                 if (!this.daemon) {

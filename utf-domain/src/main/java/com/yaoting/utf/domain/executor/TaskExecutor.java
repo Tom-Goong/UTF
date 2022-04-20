@@ -131,7 +131,6 @@ public class TaskExecutor implements Executor {
             callback(task.getCallBackUrl(), result);
         }
 
-        // 往上层提交结果
         jobExecutor.handleTaskResult(vertex, result);
     }
 

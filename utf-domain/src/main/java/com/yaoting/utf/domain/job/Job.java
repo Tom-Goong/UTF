@@ -22,9 +22,7 @@ public class Job extends BaseEntity {
     private String owner;
 
     private String callBackUrl;
-    /**
-     * 自动执行
-     */
+
     private boolean autoExec;
 
     private State state = State.Ready;
@@ -66,7 +64,6 @@ public class Job extends BaseEntity {
 
             pushTasks(tasksGrouped.get(DAG.START_VERTEX_ID), tasksGrouped, dag);
 
-            // 如果有任何 task 任务不是 ready 状态，则说明之前运行过，task 节点应该是成功的
             if (getTasks()
                     .stream()
                     .anyMatch(task -> !task.isStateOf(State.Ready))) {
@@ -75,7 +72,7 @@ public class Job extends BaseEntity {
         }
 
         Long vertexNum = dag.vertexNum();
-        Preconditions.checkState(tasks.size() == vertexNum, String.format("拓扑图结构异常, 实际任务数: %s, 拓扑图任务数：%s", tasks.size(), vertexNum));
+        Preconditions.checkState(tasks.size() == vertexNum, String.format("DAG structured failed, real num of task : %s, num of task in topology：%s", tasks.size(), vertexNum));
 
         return dag.stable();
     }
@@ -88,7 +85,7 @@ public class Job extends BaseEntity {
         for (Task task : tasks) {
             dag.pushTask(task);
 
-            // 处理下一层
+            // handle next level
             pushTasks(tasksGrouped.get(task.getId()), tasksGrouped, dag);
         }
     }

@@ -9,11 +9,6 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class BasicTempContext implements TemporaryContext {
-    /**
-     * 将项目内所有操作，账号化。包括项目内本身的调用。为系统本身分配账号
-     *
-     * 这样所有的上下文都可以携带账号信息了
-     */
     protected Date startTime = new Date();
     protected Date endTime;
     protected String traceId = TrackLogger.getTraceId();

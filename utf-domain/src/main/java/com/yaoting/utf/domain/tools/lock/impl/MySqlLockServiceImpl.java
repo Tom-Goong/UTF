@@ -24,8 +24,8 @@ public class MySqlLockServiceImpl implements LockService {
 
     @Override
     public Optional<LockInfoVO> tryLock(LockInfoVO lockInfoVO) {
-        Preconditions.checkState(notNull(lockInfoVO), "lockInfo 为空");
-        Preconditions.checkState(!lockInfoVO.hasExpired(), "给定 lockInfo 锁已过期，不需要锁");
+        Preconditions.checkState(notNull(lockInfoVO), "LockInfo can't been blank");
+        Preconditions.checkState(!lockInfoVO.hasExpired(), "LockInfo has been expired，can't been locked");
 
         LockInfoVO lockInfoFromDB = lockInfoRepo.selectByServiceAndLockKey(lockInfoVO.namespace(), lockInfoVO.key());
 
@@ -33,11 +33,11 @@ public class MySqlLockServiceImpl implements LockService {
             return Optional.ofNullable(lockInfoRepo.getLock(lockInfoVO));
         } else if (hasExpired(lockInfoFromDB)) {
             if (lockInfoRepo.deleteById(lockInfoFromDB.namespace(), lockInfoFromDB.key())) {
-                // 删除过期的后，重新插入
+                // retry
                 return tryLock(lockInfoVO);
             }
         } else if (sameInstance(lockInfoFromDB, lockInfoVO)) {
-            // 重用锁 @TODO 需要考虑所时间不同问题
+            // refuse @TODO consider to handle the unequal time
             return Optional.of(lockInfoFromDB);
         }
 
@@ -55,7 +55,7 @@ public class MySqlLockServiceImpl implements LockService {
             return true;
         }
 
-        Preconditions.checkBizStatus(sameInstance(lockInfoFromDB, lockInfoVO), "有效锁只能由持有者释放");
+        Preconditions.checkBizStatus(sameInstance(lockInfoFromDB, lockInfoVO), "Only the holder can release the lock which is still locking");
         return lockInfoRepo.deleteById(lockInfoFromDB.namespace(), lockInfoFromDB.key());
     }
 

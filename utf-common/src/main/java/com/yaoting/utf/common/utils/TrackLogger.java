@@ -9,9 +9,6 @@ import static com.yaoting.utf.common.utils.ValidateUtils.isNotBlank;
 
 
 public abstract class TrackLogger {
-    /**
-     * 放在 MDC 的消息，可以通过 %X{keyName} 配置，输出到日志文件中
-     */
     private static final String TRACE_ID = "traceId";
     private static final String SPAN_ID = "spanId";
 

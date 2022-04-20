@@ -1,8 +1,10 @@
-package com.yaoting.utf.domain.coordinator;
+package com.yaoting.utf.domain.coordinator.local;
 
 
 import com.yaoting.utf.common.context.AppContext;
 import com.yaoting.utf.domain.common.ServiceState;
+import com.yaoting.utf.domain.coordinator.remote.HTTPRemoteCoordinator;
+import com.yaoting.utf.domain.coordinator.remote.RemoteCoordinator;
 import com.yaoting.utf.domain.executor.JobExecutor;
 import com.yaoting.utf.domain.executor.Listener;
 import com.yaoting.utf.domain.job.Job;
@@ -145,7 +147,7 @@ public class DefaultLocalCoordinator implements LocalCoordinator, Listener {
     @Override
     public void syncInOtherJobState(SyncJobStateVO vo) {
         String remoteHostname = vo.getHostname();
-        // TODO 如果不存在，需要刷新节点
+        // TODO if remoteCoordinator == null, refresh them
         RemoteCoordinator remoteCoordinator = remoteCoordinators.get(remoteHostname);
         jobAndCoordinators.put(vo.getJobId(), remoteCoordinator);
     }

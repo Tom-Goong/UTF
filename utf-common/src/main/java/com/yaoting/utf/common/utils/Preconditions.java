@@ -10,9 +10,6 @@ public class Preconditions {
         }
     }
 
-    /**
-     * 因参数错误导致的异常状态，
-     */
     public static void checkRequestStatus(boolean expression, String errorMsg) {
         if (!expression) {
             throw new BadRequestException(errorMsg);

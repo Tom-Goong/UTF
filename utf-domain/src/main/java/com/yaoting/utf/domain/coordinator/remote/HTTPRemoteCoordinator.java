@@ -1,9 +1,9 @@
-package com.yaoting.utf.domain.coordinator;
+package com.yaoting.utf.domain.coordinator.remote;
 
+import com.yaoting.utf.domain.common.ServiceState;
 import com.yaoting.utf.domain.executor.Listener;
 import com.yaoting.utf.domain.job.Job;
 import com.yaoting.utf.domain.job.task.Result;
-import com.yaoting.utf.domain.common.ServiceState;
 import com.yaoting.utf.domain.job.vo.SyncJobStateVO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +28,6 @@ public class HTTPRemoteCoordinator implements RemoteCoordinator, Listener {
         throw new IllegalStateException("Remote Coordinator do not need to sync, hostname: " + hostname);
     }
 
-    /**
-     * 异步化 同步job 状态给实际的应用实例
-     */
     @Override
     public void syncInOtherJobState(SyncJobStateVO vo) {
 

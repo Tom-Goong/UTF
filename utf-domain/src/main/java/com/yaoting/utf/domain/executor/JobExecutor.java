@@ -90,7 +90,6 @@ public class JobExecutor implements Executor {
 
         jobHandler.submit(this::handlerJob);
 
-        // 变更状态
         toState(ServiceState.WORKING);
     }
 
@@ -136,7 +135,7 @@ public class JobExecutor implements Executor {
                 Job job = jobInRunning.get(jobId);
                 job.toState(State.Succeed);
 
-                // TODO sync to 协调器
+                // TODO sync to Coordinate
                 log.info("EndVertex has succeed, notify Coordinate");
                 sync2Listeners(job, result);
                 jobInRunning.remove(jobId);
@@ -144,7 +143,7 @@ public class JobExecutor implements Executor {
             }
 
             if (!isWorking()) {
-                // 暂停任务，不可提交新任务
+                // TODO can't go on
                 return;
             }
 
@@ -163,7 +162,6 @@ public class JobExecutor implements Executor {
             if (vertex.isEndVertex()) {
                 Long jobId = vertex.getTask().getJobId();
                 jobInRunning.remove(jobId);
-//                dags.remove(jobId);
             }
 
         }

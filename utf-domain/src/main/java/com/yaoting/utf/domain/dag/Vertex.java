@@ -17,10 +17,6 @@ import java.util.Optional;
 import static com.yaoting.utf.domain.dag.DAG.END_VERTEX_ID;
 import static com.yaoting.utf.domain.dag.DAG.START_VERTEX_ID;
 
-/**
- * 简易版本，需使用 Edge
- */
-
 @Data
 @EqualsAndHashCode(exclude = "ins")
 @ToString(exclude = {"ins", "outs"})
@@ -78,7 +74,7 @@ public class Vertex {
     }
 
     /**
-     * 包括自己
+     * include self
      */
     public List<Vertex> runnableVertexes() {
         List<Vertex> list = new ArrayList<>();

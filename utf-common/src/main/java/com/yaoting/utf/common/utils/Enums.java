@@ -12,14 +12,14 @@ public class Enums {
         return Arrays.stream(enums)
                 .filter(type -> type.is(id))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("不存在枚举Id: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("non-existence id: " + id));
     }
 
     public static <T extends BaseEnumInterface> T of(T[] enums, String desc) {
         return Arrays.stream(enums)
                 .filter(type -> type.is(desc))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("不存在枚举描述: " + desc));
+                .orElseThrow(() -> new IllegalArgumentException("non-existence desc: " + desc));
     }
 
     public static Map<String, String> toDesc(BaseEnumInterface[] descInterfaces) {

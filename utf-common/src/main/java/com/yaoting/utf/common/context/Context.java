@@ -14,9 +14,6 @@ public interface Context {
 
     Date getStartTime();
 
-    /**
-     * context 持续时间
-     */
     default long duration() {
         return System.currentTimeMillis() - getStartTime().getTime();
     }

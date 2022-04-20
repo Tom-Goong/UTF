@@ -1,8 +1,5 @@
 package com.yaoting.utf.domain.common;
 
-/**
- * 记录状态
- */
 public interface LifeCycle {
 
     default boolean isWorking() {

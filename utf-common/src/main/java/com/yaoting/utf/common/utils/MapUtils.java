@@ -10,7 +10,7 @@ import java.util.Map;
 public abstract class MapUtils {
 
     public static <K, V> Map<K, V> of(Tuple2<K, V>... tuples) {
-        Preconditions.notNull(tuples, "元素不能为空");
+        Preconditions.notNull(tuples, "args can't been null");
 
         Map<K, V> result = new HashMap<>();
 

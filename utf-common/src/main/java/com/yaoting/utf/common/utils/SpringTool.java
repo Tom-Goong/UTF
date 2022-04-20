@@ -19,16 +19,10 @@ import java.util.Map;
 public class SpringTool implements ApplicationContextAware, DisposableBean {
     private static ApplicationContext applicationContext = null;
 
-    /**
-     * 去的存储在静态变量中的ApplicationContext
-     */
     private static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
-    /**
-     * 从静态变量applicationContext中去的Bean，自动转型为所复制对象的类型
-     */
     public static <T> T getBean(String name) {
         return (T) applicationContext.getBean(name);
     }
@@ -45,35 +39,23 @@ public class SpringTool implements ApplicationContextAware, DisposableBean {
         return getApplicationContext().getBeansOfType(type);
     }
 
-    /**
-     * 清除SpringContextHolder中的ApplicationContext为Null
-     */
     public static void clearHolder() {
         if (log.isDebugEnabled()) {
-            log.debug("清除SpringContextHolder中的ApplicationContext:" + applicationContext);
+            log.debug("Clear applicationContext:" + applicationContext);
         }
         applicationContext = null;
     }
 
-    /**
-     * 实现ApplicationContextAware接口，注入Context到静态变量
-     */
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         SpringTool.applicationContext = context;
     }
 
-    /**
-     * 实现DisposableBean接口，在Context关闭时清理静态变量
-     */
     @Override
     public void destroy() {
         SpringTool.clearHolder();
     }
 
-    /**
-     * 发布一个事件
-     */
     public static void publish(ApplicationEvent event) {
         getApplicationContext().publishEvent(event);
     }

@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ValidateUtils {
-    /**
-     * 为空
-     */
+
     public static boolean isNull(Object object) {
         return object == null;
     }
@@ -40,9 +38,7 @@ public class ValidateUtils {
     public static boolean noneBlank(String... params) {
         return !anyBlank(params);
     }
-    /**
-     * 存在空
-     */
+
     public static boolean isExistBlank(String str) {
         int strLen;
         if (str == null || (strLen = str.length()) == 0) {
@@ -56,9 +52,6 @@ public class ValidateUtils {
         return false;
     }
 
-    /**
-     * 是空字符串
-     */
     public static boolean equalList(List<Object> seq1, List<Object> seq2) {
         if (isNull(seq1) && isNull(seq2)) {
             return true;
