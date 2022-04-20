@@ -5,17 +5,12 @@ import com.yaoting.utf.domain.job.task.Result;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SleepFunc implements Func<Void> {
+public class SleepFunc extends DefaultFunc<Void> {
     private final long sleepTime;
 
     @Override
     public String name() {
         return this.getClass().getSimpleName();
-    }
-
-//    @Override
-    public Class<Void> returnType() {
-        return Void.class;
     }
 
     @Override

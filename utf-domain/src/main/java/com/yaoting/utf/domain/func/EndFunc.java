@@ -5,11 +5,7 @@ import com.yaoting.utf.domain.job.task.Result;
 
 import java.util.Optional;
 
-public class EndFunc implements Func<Void> {
-    //    @Override
-    public Class<Void> returnType() {
-        return Void.class;
-    }
+public class EndFunc extends DefaultFunc<Void> {
 
     @Override
     public String name() {
@@ -17,7 +13,7 @@ public class EndFunc implements Func<Void> {
     }
 
     @Override
-    public Optional<String> validate(Task task) {
+    public Optional<String> parseAndValidate(Task task) {
         log.info("{} start to validate", name());
         return Optional.empty();
     }

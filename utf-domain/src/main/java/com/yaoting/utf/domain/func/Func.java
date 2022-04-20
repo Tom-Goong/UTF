@@ -12,11 +12,13 @@ public interface Func<T> {
     String START_FUNC_NAME = "StartFunc";
     String END_FUNC_NAME = "EndFunc";
 
+    Namespace namespace();
+
     default String name() {
         return this.getClass().getName();
     }
 
-    default Optional<String> validate(Task task) {
+    default Optional<String> parseAndValidate(Task task) {
         return Optional.empty();
     }
 

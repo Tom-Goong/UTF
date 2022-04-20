@@ -61,7 +61,7 @@ public class TaskExecutor implements Executor {
         Task task = vertex.getTask();
 
         Func<?> func = funcOptional.get();
-        Optional<String> validateResult = func.validate(task);
+        Optional<String> validateResult = func.parseAndValidate(task);
         if (validateResult.isPresent()) {
             log.error("Func validate failed, funcName:{}, reason: {}", func.name(), validateResult.get());
 
